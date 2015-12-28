@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+
+	<!-- 土地模块日志 -->
+	<appender name="fieldAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="logs/field.log"/>
+		<param name="DatePattern" value="'.'yyyy-MM"/>
+		<layout  class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[MyShop]%p [%t] %C.%M(%L) | %m%n"/>
+	    </layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="INFO" />
+			<param name="LevelMax" value="INFO" />
+		</filter>
+	</appender>
+	<category name="fieldLogger" additivity="true">  
+		<level value="INFO"/>
+		<appender-ref ref="fieldAppender" />  
+	</category>
+	
+
+
+    <!-- 控制台输出 -->
+	<appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[MyShop]%p [%t] %C.%M(%L) | %m%n"/>
+		</layout>
+	</appender>
+	
+    <!-- 系统启动日志输出文件 -->
+    <appender name="fileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="logs/system.log"/>
+		<param name="DatePattern" value="'.'yyyy-MM"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[MyShop]%p [%t] %C.%M(%L) | %m%n"/>
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="INFO" />
+		</filter>
+	</appender>
+	
+	<!-- 异常日志 -->
+	<appender name="errorAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="logs/error.log"/>
+		<param name="DatePattern" value="'.'yyyy-MM"/>
+		<layout  class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[MyShop]%p [%t] %C.%M(%L) | %m%n"/>
+	    </layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="ERROR" />
+			<param name="LevelMax" value="ERROR" />
+		</filter>
+	</appender>
+	
+	<appender name="alarmAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="logs/alarm.log"/>
+		<param name="DatePattern" value="'.'yyyy-MM"/>
+		<layout  class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d][%X{userIP}][%X{userName}] - %m%n"/>
+	    </layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="INFO" />
+		</filter>
+	</appender>
+	
+	<!-- debug日志输出文件 -->
+	<appender name="debugAppender" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="logs/debug.log"/>
+		<param name="MaxFileSize" value="50MB"/>
+		<param name="MaxBackupIndex" value="0"/>
+		<layout  class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[MyShop]%p [%t] %C.%M(%L) | %m%n"/>
+	    </layout>
+	    <filter class="org.apache.log4j.varia.LevelRangeFilter">
+          <param name="LevelMin" value="DEBUG" />
+          <param name="LevelMax" value="DEBUG" />
+        </filter>
+	</appender>
+	
+	
+	<category name="errorLogger" additivity="true">  
+		<level value="ERROR"/>
+		<appender-ref ref="errorAppender" />  
+	</category>
+	
+	<category name="alarmLogger" additivity="true">  
+		<level value="INFO"/>
+		<appender-ref ref="alarmAppender" />  
+	</category>
+	
+	<!-- debugLogger -->
+	<category name="debugLogger" additivity="true">  
+	    <level value="DEBUG"/>
+		<appender-ref ref="debugAppender"/>  
+	</category>
+	
+	<logger name="com.faith.custom" additivity="true">
+	   <level value="DEBUG" />
+	   <appender-ref ref="debugAppender" />
+	</logger>
+	
+	<logger name="org.springframework" additivity="false">
+	   <level value="INFO" />
+	   <appender-ref ref="debugAppender" />
+	</logger>
+	<logger name="com.ibatis" additivity="true">
+   		 <level value="DEBUG" />
+	     <appender-ref ref="debugAppender" />
+	</logger>
+	<logger name="java.sql.Connection" additivity="false">
+	    <level value="DEBUG" />
+	    <appender-ref ref="debugAppender" />
+	</logger>
+	<logger name="java.sql.Statement" additivity="false">
+	   <level value="DEBUG" />
+	   <appender-ref ref="debugAppender" />
+	</logger>
+	<logger name="java.sql.PreparedStatement" additivity="false">
+	   <level value="DEBUG" />
+	   <appender-ref ref="debugAppender" />
+	</logger>
+	
+	<logger name="org.compass" additivity="false">
+	   <level value="ERROR" />
+	   <appender-ref ref="debugAppender" />
+	</logger>
+	<logger name="org.hibernate" additivity="false">
+	   <level value="ERROR" />
+	   <appender-ref ref="debugAppender" />
+	</logger>
+	
+	<root>
+	  <level value="INFO"/>
+	  <appender-ref ref="stdout"/>
+	  <appender-ref ref="fileAppender"/>
+	</root>
+	
+</log4j:configuration>

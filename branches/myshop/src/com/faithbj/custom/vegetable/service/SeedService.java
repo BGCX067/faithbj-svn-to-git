@@ -1,0 +1,8 @@
+package com.faithbj.custom.vegetable.service;
+
+import com.faithbj.shop.entity.Seed;
+import com.faithbj.shop.service.BaseService;
+
+public interface SeedService extends BaseService<Seed, String>{
+
+}

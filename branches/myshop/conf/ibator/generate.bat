@@ -1,0 +1,1 @@
+java -jar ../../WebRoot/WEB-INF/lib/ibator.jar -configfile ibatorConfig.xml -overwrite

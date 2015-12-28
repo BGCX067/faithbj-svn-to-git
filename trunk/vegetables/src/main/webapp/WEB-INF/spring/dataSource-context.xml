@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<context:property-placeholder location="classpath:hibernate.properties" />
+
+	<!-- 数据源定义,使用c3p0连接池 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close" p:driverClass="${c3p0.driver_class}" p:user="${c3p0.username}"
+		p:password="${c3p0.password}" p:jdbcUrl="${c3p0.url}" p:minPoolSize="${c3p0.min_size}"
+		p:maxPoolSize="${c3p0.max_size}" p:checkoutTimeout="${c3p0.timeout}"
+		p:maxIdleTime="${c3p0.idle_test_period}" p:acquireIncrement="${c3p0.acquire_increment}"
+		p:maxStatements="${c3p0.max_statements}" p:initialPoolSize="3"
+		p:acquireRetryAttempts="${c3p0.acquireRetryAttempts}" />
+
+</beans>

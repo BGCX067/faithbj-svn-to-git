@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.1.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<http security="none" pattern="/vegetables/**" />
+
+	<http use-expressions="true" entry-point-ref="loginUrlEntryPoint">
+
+		<intercept-url pattern="/index" access="permitAll" />
+
+		<intercept-url pattern="/land/**" access="permitAll" />
+		<intercept-url pattern="/article/**" access="permitAll" />
+		<intercept-url pattern="/product/**" access="permitAll" />
+
+		<intercept-url pattern="/cjlhome/loginview" access="permitAll" />
+		<intercept-url pattern="/faith/loginview" access="permitAll" />
+
+		<intercept-url pattern="/ajaxMemberVerify" access="permitAll" />
+		<intercept-url pattern="/ajaxRegister" access="permitAll" />
+		<intercept-url pattern="/cjlhome/login" access="permitAll" />
+		<intercept-url pattern="/faith/login" access="permitAll" />
+		<intercept-url pattern="/cjlhome/**"
+			access="hasAnyRole('ROLE_SUPERVISOR','ROLE_ADMIN','ROLE_MEMBER')" />
+		<intercept-url pattern="/faith/**"
+			access="hasAnyRole('ROLE_SUPERVISOR','ROLE_ADMIN','ROLE_MEMBER')" />
+
+		<!-- 登录过滤器 -->
+		<custom-filter before="FORM_LOGIN_FILTER" ref="loginFilter" />
+		<custom-filter position="FORM_LOGIN_FILTER" ref="adminLoginFilter" />
+
+		<!-- 注销过滤器 -->
+		<custom-filter before="LOGOUT_FILTER" ref="logoutFilter" />
+		<custom-filter position="LOGOUT_FILTER" ref="adminLogoutFilter" />
+	</http>
+
+	<!-- 验证前台用户 -->
+	<beans:bean id="loginFilter"
+		class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter"
+		p:authenticationManager-ref="authenticationManager"
+		p:authenticationFailureHandler-ref="failureHandler"
+		p:authenticationSuccessHandler-ref="successHandler"
+		p:filterProcessesUrl="/cjlhome/login" />
+
+	<beans:bean id="failureHandler"
+		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler"
+		p:defaultFailureUrl="/cjlhome/loginview" />
+
+	<beans:bean id="successHandler"
+		class="com.faithbj.shop.security.AuthenticationSuccessHandler"
+		p:alwaysUseDefaultTargetUrl="true" p:defaultTargetUrl="/index" />
+
+	<!-- 验证后台用户 -->
+	<beans:bean id="adminLoginFilter"
+		class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter"
+		p:authenticationManager-ref="authenticationManager"
+		p:authenticationFailureHandler-ref="adminFailureHandler"
+		p:authenticationSuccessHandler-ref="adminSuccessHandler"
+		p:filterProcessesUrl="/faith/login" />
+
+	<beans:bean id="adminFailureHandler"
+		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler"
+		p:defaultFailureUrl="/faith/loginview" />
+
+	<beans:bean id="adminSuccessHandler"
+		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler"
+		p:alwaysUseDefaultTargetUrl="true" p:defaultTargetUrl="/faith/index" />
+
+	<!-- 注销过滤器，完成前台用户注销时的定向功能 -->
+	<beans:bean id="logoutFilter"
+		class="org.springframework.security.web.authentication.logout.LogoutFilter"
+		p:filterProcessesUrl="/cjlhome/logout">
+		<beans:constructor-arg value="/index" /><!--注销成功后的页面 -->
+		<beans:constructor-arg>
+			<beans:list>
+				<beans:bean
+					class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+				<beans:bean class="com.faithbj.shop.security.CookiesLogoutHandler" />
+			</beans:list>
+		</beans:constructor-arg>
+	</beans:bean>
+	<!-- 注销过滤器，完成后台用户注销时的定向功能 -->
+	<beans:bean id="adminLogoutFilter"
+		class="org.springframework.security.web.authentication.logout.LogoutFilter"
+		p:filterProcessesUrl="/faith/logout">
+		<beans:constructor-arg value="/faith/loginview" />
+		<beans:constructor-arg>
+			<beans:list>
+				<beans:bean
+					class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+			</beans:list>
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<authentication-manager alias="authenticationManager">
+		<!-- <authentication-provider user-service-ref="customerUserDetailsService"> 
+			<password-encoder hash="md5"/> </authentication-provider> -->
+		<authentication-provider user-service-ref="customerUserDetailsService">
+		</authentication-provider>
+	</authentication-manager>
+
+	<global-method-security pre-post-annotations="enabled"
+		access-decision-manager-ref="accessDecisionManager" />
+
+	<beans:bean id="accessDecisionManager"
+		class="org.springframework.security.access.vote.AffirmativeBased">
+		<beans:property name="decisionVoters">
+			<beans:list>
+				<beans:bean class="org.springframework.security.access.vote.RoleVoter" />
+				<beans:bean
+					class="org.springframework.security.access.vote.AuthenticatedVoter" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+	<!-- Automatically receives AuthenticationEvent messages -->
+	<beans:bean id="loggerListener"
+		class="org.springframework.security.authentication.event.LoggerListener" />
+
+</beans:beans>

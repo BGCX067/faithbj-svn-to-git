@@ -1,0 +1,17 @@
+﻿1、导航路径错误pathList
+2、分页(不一定是bug，待确定)
+3、种子的样式(已改)
+4、productattrbutedaoimp级联删除有问题
+5、前台商品的详细页面没有
+6、添加文章分类的验证
+7.shop.js 21行，		url: faithbj.base + "/shop/member!ajaxMemberVerify.action",，这个错误
+
+8.shop.js 403行，没做完
+
+9.购物车列表没有(薛改)
+10.结算没有显示（薛改）
+11.farmland_picture_list.ftl里的 <select name="pager.pageSize" id="pageSize"> 怎么自动跳转到首页的？(已改)
+
+12.我的土地列表还有错呢（孙绍燕，待改）
+
+13.ajaxMemberVerify,待查看，报错security命名空间

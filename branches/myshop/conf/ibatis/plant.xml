@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Plant" >
+  <resultMap id="ibatorgenerated_BaseResultMap" class="com.faithbj.custom.vegetable.entity.Plant" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="createDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="modifyDate" property="modifydate" jdbcType="TIMESTAMP" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="selectEntityListByCond" resultMap="ibatorgenerated_BaseResultMap" parameterClass="com.faithbj.custom.vegetable.entity.Plant" >
+    select id, createDate, modifyDate, name
+    from vegetable_plant
+    where 1 = 1
+    <dynamic prepend="">	
+  		<isNotEmpty prepend=" and " property="id">a.id = #id#</isNotEmpty>			
+  		<isNotEmpty prepend=" and " property="createDate">a.createDate = #createDate#</isNotEmpty>		
+  		<isNotEmpty prepend=" and " property="modifyDate">a.modifyDate = #modifyDate#</isNotEmpty>		
+  		<isNotEmpty prepend=" and " property="name">a.name = #name#</isNotEmpty>		
+	</dynamic>
+  </select>
+  
+  <select id="selectEntityById" resultMap="ibatorgenerated_BaseResultMap" parameterClass="com.faithbj.custom.vegetable.entity.Plant" >
+    select id, createDate, modifyDate, name
+    from vegetable_plant
+    where id = #id:VARCHAR#
+  </select>
+  
+  <delete id="deleteEntity" parameterClass="com.faithbj.custom.vegetable.entity.Plant" >
+    delete from vegetable_plant
+    where id = #id:VARCHAR#
+  </delete>
+  
+  <insert id="insertEntity" parameterClass="com.faithbj.custom.vegetable.entity.Plant" >
+    insert into vegetable_plant
+    <dynamic prepend="(" >
+      <isNotNull prepend="," property="id" >
+        id
+      </isNotNull>
+      <isNotNull prepend="," property="createdate" >
+        createDate
+      </isNotNull>
+      <isNotNull prepend="," property="modifydate" >
+        modifyDate
+      </isNotNull>
+      <isNotNull prepend="," property="name" >
+        name
+      </isNotNull>
+      )
+    </dynamic>
+    values
+    <dynamic prepend="(" >
+      <isNotNull prepend="," property="id" >
+        #id:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="createdate" >
+        #createdate:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="modifydate" >
+        #modifydate:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="name" >
+        #name:VARCHAR#
+      </isNotNull>
+      )
+    </dynamic>
+  </insert>
+  
+  <update id="updateEntity" parameterClass="com.faithbj.custom.vegetable.entity.Plant" >
+    update vegetable_plant
+    <dynamic prepend="set" >
+      <isNotNull prepend="," property="createdate" >
+        createDate = #createdate:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="modifydate" >
+        modifyDate = #modifydate:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="name" >
+        name = #name:VARCHAR#
+      </isNotNull>
+    </dynamic>
+    where id = #id:VARCHAR#
+  </update>
+  
+</sqlMap>

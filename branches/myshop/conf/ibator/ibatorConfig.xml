@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ibatorConfiguration PUBLIC "-//Apache Software Foundation//DTD Apache iBATIS Ibator Configuration 1.0//EN" "http://ibatis.apache.org/dtd/ibator-config_1_0.dtd">
+<ibatorConfiguration>
+	<classPathEntry location="../../WebRoot/WEB-INF/lib/mysql-jdbc-5.1.jar" />
+   
+	<ibatorContext id="myshop" targetRuntime="Ibatis2Java2">
+      
+		<jdbcConnection 
+	     	driverClass="com.mysql.jdbc.Driver" 
+	     	connectionURL="jdbc:mysql://localhost:3306/shop" 
+	     	userId="shop" 
+	     	password="shop" >
+		</jdbcConnection>
+	    
+		<javaTypeResolver >
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+		
+		<javaModelGenerator targetPackage="com.faithbj.custom.vegetable.entity" targetProject="../../src">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+		<sqlMapGenerator targetPackage="ibatis" targetProject="../../conf">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+		<daoGenerator targetPackage="com.faithbj.custom.vegetable.dao" targetProject="../../src" type="IBATIS">
+			<property name="enableSubPackages" value="true" />
+		</daoGenerator>
+	  
+		<table tableName="vegetable_plant" domainObjectName="Plant"/>
+	</ibatorContext>
+</ibatorConfiguration>
